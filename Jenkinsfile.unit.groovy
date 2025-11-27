@@ -3,6 +3,11 @@ pipeline {
         label 'docker'
     }
     stages {
+        stage('Source') {
+            steps {
+                git 'https://github.com/Ariel2705/unir-cicd.git'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building stage!'
@@ -19,6 +24,7 @@ pipeline {
     post {
         always {
             junit 'results/*_result.xml'
+            cleanWs()
         }
     }
 }
