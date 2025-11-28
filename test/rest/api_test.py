@@ -9,6 +9,10 @@ import pytest
 BASE_URL = os.environ.get("BASE_URL")
 DEFAULT_TIMEOUT = 2  # in secs
 
+class SimpleResponse:
+    def __init__(self, status, body):
+        self.status = status
+        self.body = body
 
 @pytest.mark.api
 class TestApi(unittest.TestCase):
@@ -22,7 +26,11 @@ class TestApi(unittest.TestCase):
     def fetch(self, path):
         if self.base_url:
             url = f"{self.base_url}{path}"
-            return urlopen(url, timeout=DEFAULT_TIMEOUT)
+            try:
+                resp = urlopen(url, timeout=DEFAULT_TIMEOUT)
+                return SimpleResponse(resp.status, resp.read().decode())
+            except HTTPError as e:
+                return SimpleResponse(e.code, e.read().decode())
 
         resp = self.client.get(path)
 
