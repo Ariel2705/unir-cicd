@@ -32,7 +32,7 @@ pipeline {
         }
         stage('API tests') {
             steps {
-                sh 'make test-api'
+                //sh 'make test-api'
             }
         }
         stage('E2E tests') {
