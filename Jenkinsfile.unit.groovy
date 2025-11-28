@@ -15,13 +15,13 @@ pipeline {
         stage('Unit tests') {
             steps {
                 sh 'make test-unit'
-                archiveArtifacts artifacts: 'results/*.xml'
+                archiveArtifacts artifacts: '/opt/results/*.xml'
             }
         }
     }
     post {
         always {
-            junit 'results/*_result.xml'
+            junit '/opt/results/*_result.xml'
             cleanWs()
         }
     }
