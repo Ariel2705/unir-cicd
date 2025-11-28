@@ -33,7 +33,7 @@ pipeline {
     }
     post {
         always {
-            junit '/opt/results/*_result.xml'
+            junit '/results/*_result.xml'
             cleanWs()
         }
     }
