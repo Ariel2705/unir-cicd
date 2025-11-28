@@ -20,7 +20,7 @@ pipeline {
                     if ls 1> /dev/null 2>&1; then
                         ts=$(date +%Y%m%d-%H%M%S)
                         mkdir -p jenkins-backup-results/$ts
-                        mv results/* jenkins-backup-results/$ts/
+                        mv * jenkins-backup-results/$ts/
                     fi
                 '''
             }
