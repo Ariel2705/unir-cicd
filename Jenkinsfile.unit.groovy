@@ -17,7 +17,7 @@ pipeline {
                 sh '''
                     cd /results || exit 1
 
-                    if ls 1> /dev/null 2>&1; then
+                    if ls * 1> /dev/null 2>&1; then
                         ts=$(date +%Y%m%d-%H%M%S)
                         mkdir -p jenkins-backup-results/$ts
                         mv * jenkins-backup-results/$ts/
