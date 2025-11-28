@@ -17,10 +17,10 @@ pipeline {
                 sh '''
                     cd /results || exit 1
 
-                    if ls * 1> /dev/null 2>&1; then
+                    if compgen -A file > /dev/null; then
                         ts=$(date +%Y%m%d-%H%M%S)
                         mkdir -p jenkins-backup-results/$ts
-                        mv * jenkins-backup-results/$ts/
+                        find . -maxdepth 1 -type f -exec mv {} jenkins-backup-results/$ts/ \;
                     fi
                 '''
             }
