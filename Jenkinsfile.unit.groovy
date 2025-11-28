@@ -30,7 +30,7 @@ pipeline {
                 sh 'make test-unit'
             }
         }
-        stage('API tests') {
+        /*stage('API tests') {
             steps {
                 //sh 'make test-api'
             }
@@ -40,7 +40,7 @@ pipeline {
                 //sh 'make test-e2e'
                 archiveArtifacts artifacts: '/results/*.xml'
             }
-        }
+        }*/
     }
     post {
         always {
