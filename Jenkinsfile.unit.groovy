@@ -38,13 +38,13 @@ pipeline {
         stage('E2E tests') {
             steps {
                 sh 'make test-e2e'
-                archiveArtifacts artifacts: '/results/*'
+                archiveArtifacts artifacts: '/results/.'
             }
         }
     }
     post {
         always {
-            junit 'results/*'
+            junit 'results/.'
             cleanWs()
         }
     }
