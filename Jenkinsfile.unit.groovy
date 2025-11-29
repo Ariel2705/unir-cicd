@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        NOTIFY_RECIPIENTS = 'hectorarielperez758@gmail.com'
+    }
     stages {
         stage('Source') {
             steps {
@@ -15,6 +18,7 @@ pipeline {
         stage('Backup') {
             steps {
                 sh '''
+                exit 1
                 cd /results || exit 1
 
                 if [ "$(ls .)" ]; then
@@ -49,6 +53,11 @@ pipeline {
         always {
             junit 'results/*.xml'
             cleanWs()
+        }
+        failure {
+            mail to: env.NOTIFY_RECIPIENTS,
+                 subject: "Jenkins: Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} failed",
+                 body: "The pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has finished with status: FAILURE. \n\nCheck the build console output at ${env.BUILD_URL} for details."
         }
     }
 }
