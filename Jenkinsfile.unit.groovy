@@ -12,7 +12,7 @@ pipeline {
                 sh 'make build'
             }
         }
-        stage('Backup') {
+        /*stage('Backup') {
             steps {
                 sh '''
                 cd /results || exit 1
@@ -24,7 +24,7 @@ pipeline {
                 fi
                 '''
             }
-        }
+        }*/
         stage('Unit tests') {
             steps {
                 sh 'make test-unit'
