@@ -17,7 +17,7 @@ pipeline {
                 sh '''
                 cd /results || exit 1
 
-                if [ "$(ls -A .)" ]; then
+                if [ "$(ls .)" ]; then
                     ts=$(date +%Y%m%d-%H%M%S)
                     mkdir -p backup-results/$ts
                     mv ./results/* backup-results/$ts/ 
