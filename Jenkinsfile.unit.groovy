@@ -26,7 +26,7 @@ pipeline {
                 '''
             }
         }
-        /*stage('Unit tests') {
+        stage('Unit tests') {
             steps {
                 sh 'make test-unit'
                 archiveArtifacts artifacts: 'results/*.xml'
@@ -37,7 +37,7 @@ pipeline {
                 sh 'make test-api'
                 archiveArtifacts artifacts: 'results/*.xml'
             }
-        }*/
+        }
         stage('E2E tests') {
             steps {
                 sh 'make test-e2e'
