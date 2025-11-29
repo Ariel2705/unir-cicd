@@ -15,27 +15,29 @@ pipeline {
         stage('Backup') {
             steps {
                 sh '''
-                    cd /results || exit 1
+                cd /results || exit 1
 
-                    if compgen -A file > /dev/null; then
-                        ts=$(date +%Y%m%d-%H%M%S)
-                        mkdir -p jenkins-backup-results/$ts
-                        find . -maxdepth 1 -type f -exec mv {} jenkins-backup-results/$ts/ \\;
-                    fi
+                if compgen -A file > /dev/null || compgen -A directory > /dev/null; then
+                    ts=$(date +%Y%m%d-%H%M%S)
+                    mkdir -p jenkins-backup-results/$ts
+                    mv ./* jenkins-backup-results/$ts/
+                fi
                 '''
             }
         }
         stage('Unit tests') {
             steps {
                 sh 'make test-unit'
+                archiveArtifacts artifacts: '/results/*.xml'
             }
         }
-        /*stage('API tests') {
+        stage('API tests') {
             steps {
-                //sh 'make test-api'
+                sh 'make test-api'
+                archiveArtifacts artifacts: '/results/*.xml'
             }
         }
-        stage('E2E tests') {
+        /*stage('E2E tests') {
             steps {
                 //sh 'make test-e2e'
                 archiveArtifacts artifacts: '/results/*.xml'
@@ -44,7 +46,7 @@ pipeline {
     }
     post {
         always {
-            junit '/results/**'
+            junit '/results/*.xml'
             cleanWs()
         }
     }
