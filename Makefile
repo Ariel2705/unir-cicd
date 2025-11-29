@@ -46,6 +46,7 @@ test-e2e:
 	docker cp ./test/e2e/cypress e2e-tests:/cypress
 	docker start -a e2e-tests || true
 	docker cp e2e-tests:/results/. /results  || true
+	docker cp e2e-tests:/results/. ./results  || true
 	docker rm --force apiserver  || true
 	docker rm --force calc-web || true
 	docker rm --force e2e-tests || true
