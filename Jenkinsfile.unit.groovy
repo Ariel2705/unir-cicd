@@ -28,13 +28,13 @@ pipeline {
         stage('Unit tests') {
             steps {
                 sh 'make test-unit'
-                archiveArtifacts artifacts: '/results/*.xml'
+                archiveArtifacts artifacts: 'results/*.xml'
             }
         }
         stage('API tests') {
             steps {
                 sh 'make test-api'
-                archiveArtifacts artifacts: '/results/*.xml'
+                archiveArtifacts artifacts: 'results/*.xml'
             }
         }
         /*stage('E2E tests') {
@@ -46,7 +46,7 @@ pipeline {
     }
     post {
         always {
-            junit '/results/*.xml'
+            junit 'results/*.xml'
             cleanWs()
         }
     }

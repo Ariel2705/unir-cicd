@@ -11,6 +11,7 @@ test-unit:
 	docker rm unit-tests || true
 	docker run --name unit-tests --env PYTHONPATH=/opt/calc -w /opt/calc calculator-app:latest pytest --cov --cov-report=xml:results/coverage.xml --cov-report=html:results/coverage --junit-xml=results/unit_result.xml -m unit || true
 	docker cp unit-tests:/opt/calc/results /results
+	docker cp unit-tests:/opt/calc/results ./results
 	docker rm unit-tests || true
 
 test-api:
@@ -23,6 +24,7 @@ test-api:
 	docker run -d --network calc-test-api --env PYTHONPATH=/opt/calc --name apiserver --env FLASK_APP=app/api.py -p 5000:5000 -w /opt/calc calculator-app:latest flask run --host=0.0.0.0
 	docker run --network calc-test-api --name api-tests --env PYTHONPATH=/opt/calc --env BASE_URL=http://apiserver:5000/ -w /opt/calc calculator-app:latest pytest --junit-xml=results/api_result.xml -m api  || true
 	docker cp api-tests:/opt/calc/results/. /results
+	docker cp api-tests:/opt/calc/results/. ./results
 	docker stop apiserver || true
 	docker rm --force apiserver || true
 	docker stop api-tests || true
