@@ -20,8 +20,8 @@ pipeline {
                 if [ "$(ls -A)" ]; then
                     ts=$(date +%Y%m%d-%H%M%S)
                     mkdir -p backup-results/$ts
-                    mv ./results/* backup-results/$ts/ 2>/dev/null
-                    rm -rf ./results || exit 1
+                    mv ./results/* backup-results/$ts/ 
+                    rm -rf ./results                    
                 fi
                 '''
             }
