@@ -12,31 +12,32 @@ pipeline {
                 sh 'make build'
             }
         }
-        /*stage('Backup') {
+        stage('Backup') {
             steps {
                 sh '''
                 cd /results || exit 1
 
                 if [ "$(ls -A)" ]; then
                     ts=$(date +%Y%m%d-%H%M%S)
-                    mkdir -p jenkins-backup-results/$ts
-                    mv ./* jenkins-backup-results/$ts/ 2>/dev/null
+                    mkdir -p backup-results/$ts
+                    mv ./results/* backup-results/$ts/ 2>/dev/null
+                    rm -rf ./results || exit 1
                 fi
                 '''
             }
-        }*/
-        stage('Unit tests') {
+        }
+        /*stage('Unit tests') {
             steps {
                 sh 'make test-unit'
                 archiveArtifacts artifacts: 'results/*.xml'
             }
-        }
-        /*stage('API tests') {
+        }*/
+        stage('API tests') {
             steps {
                 sh 'make test-api'
                 archiveArtifacts artifacts: 'results/*.xml'
             }
-        }*/
+        }
         /*stage('E2E tests') {
             steps {
                 //sh 'make test-e2e'
