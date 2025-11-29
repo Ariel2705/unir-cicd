@@ -17,10 +17,10 @@ pipeline {
                 sh '''
                 cd /results || exit 1
 
-                if compgen -A file > /dev/null || compgen -A directory > /dev/null; then
+                if [ "$(ls -A)" ]; then
                     ts=$(date +%Y%m%d-%H%M%S)
                     mkdir -p jenkins-backup-results/$ts
-                    mv ./* jenkins-backup-results/$ts/
+                    mv ./* jenkins-backup-results/$ts/ 2>/dev/null
                 fi
                 '''
             }
