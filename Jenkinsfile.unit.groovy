@@ -22,7 +22,6 @@ pipeline {
         stage('Backup') {
             steps {
                 sh '''
-                exit 1
                 cd /results || exit 1
 
                 if [ "$(ls .)" ]; then
