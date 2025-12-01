@@ -1,8 +1,8 @@
 pipeline {
     agent any
     parameters {
-        string(name: 'EMAIL_RECIPIENTS', defaultValue: 'hectorarielperez758@gmail.com', description: 'Email recipients for failure notification')
-        booleanParam(name: 'SEND_MAIL', defaultValue: false, description: 'If true, actually send the mail; otherwise just echo the content')
+        string(name: 'EMAIL_RECIPIENTS', defaultValue: 'hectorarielperez758@gmail.com')
+        booleanParam(name: 'SEND_MAIL', defaultValue: false)
     }
     environment {
         NOTIFY_RECIPIENTS = "${params.EMAIL_RECIPIENTS}"
@@ -60,17 +60,16 @@ pipeline {
         }
         failure {
             script {
-                echo '----- Mail preview (failure) -----'
+                echo '----- Mail (failure) -----'
                 echo "To: ${env.NOTIFY_RECIPIENTS}"
-                echo "Subject: Jenkins: Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} failed"
-                echo "Body: The pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has finished with status: FAILURE. Check ${env.BUILD_URL} for details."
+                echo "Subject: Jenkins: Falló el Job '${env.JOB_NAME}' #${env.BUILD_NUMBER}"
+                echo "Body: El pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) ha terminado con estado: FAILURE. Revisar ${env.BUILD_URL} para más detalles."
                 if (params.SEND_MAIL) {
-                    // Uncomment the mail step if you want to send for real. Requires Mailer or Email Extension plugin & SMTP configured in Jenkins
                     mail to: env.NOTIFY_RECIPIENTS,
-                         subject: "Jenkins: Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} failed",
-                         body: "The pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has finished with status: FAILURE. Check ${env.BUILD_URL} for details."
+                         subject: "Jenkins: Falló el Job '${env.JOB_NAME}' #${env.BUILD_NUMBER}",
+                         body: "El pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) ha terminado con estado: FAILURE. Revisar ${env.BUILD_URL} para más detalles."
                 } else {
-                    echo "SEND_MAIL is false -> no email sent (only preview logged above)"
+                    echo "SEND_MAIL es false por lo que solamente se puede ver el preview"
                 }
             }
         }
