@@ -1,7 +1,11 @@
 pipeline {
     agent any
+    parameters {
+        string(name: 'EMAIL_RECIPIENTS', defaultValue: 'hectorarielperez758@gmail.com', description: 'Email recipients for failure notification')
+        booleanParam(name: 'SEND_MAIL', defaultValue: false, description: 'If true, actually send the mail; otherwise just echo the content')
+    }
     environment {
-        NOTIFY_RECIPIENTS = 'hectorarielperez758@gmail.com'
+        NOTIFY_RECIPIENTS = "${params.EMAIL_RECIPIENTS}"
     }
     stages {
         stage('Source') {
@@ -55,9 +59,20 @@ pipeline {
             cleanWs()
         }
         failure {
-            mail to: env.NOTIFY_RECIPIENTS,
-                 subject: "Jenkins: Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} failed",
-                 body: "The pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has finished with status: FAILURE. \n\nCheck the build console output at ${env.BUILD_URL} for details."
+            script {
+                echo '----- Mail preview (failure) -----'
+                echo "To: ${env.NOTIFY_RECIPIENTS}"
+                echo "Subject: Jenkins: Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} failed"
+                echo "Body: The pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has finished with status: FAILURE. Check ${env.BUILD_URL} for details."
+                if (params.SEND_MAIL) {
+                    // Uncomment the mail step if you want to send for real. Requires Mailer or Email Extension plugin & SMTP configured in Jenkins
+                    mail to: env.NOTIFY_RECIPIENTS,
+                         subject: "Jenkins: Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} failed",
+                         body: "The pipeline job '${env.JOB_NAME}' (build #${env.BUILD_NUMBER}) has finished with status: FAILURE. Check ${env.BUILD_URL} for details."
+                } else {
+                    echo "SEND_MAIL is false -> no email sent (only preview logged above)"
+                }
+            }
         }
     }
 }
